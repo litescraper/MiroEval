@@ -17,6 +17,7 @@ Usage:
     python pipeline.py --num-per-topic 8 --max-workers 12
 """
 
+import os
 import argparse
 import json
 import logging
@@ -118,7 +119,7 @@ def search_serper(query: str, num_results: int = 8) -> list[dict]:
         return []
     try:
         r = requests.post(
-            "https://google.serper.dev/search",
+            f'{os.getenv("SERPER_BASE_URL", "https://google.serper.dev").rstrip("/")}/search',
             headers={"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"},
             json={"q": query, "num": num_results},
             timeout=15,
